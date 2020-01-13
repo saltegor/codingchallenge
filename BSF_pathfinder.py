@@ -2,7 +2,7 @@
 class Graph():
 
     # initialization
-    def __init__ (self, graph_data):
+    def __init__ (self, graph_data = []):
         self.graph_data = graph_data
         # just checking 
         # print(self.graph_data)
@@ -10,6 +10,7 @@ class Graph():
         self.nodes = []
         self.edges = []
         self.costs = []
+        self.neighbours = []
 
     # define adding the node as method
     def add_node(self, node):
@@ -20,7 +21,8 @@ class Graph():
             self.nodes.append(str(node))
             #print("Node {} is added".format(str(node)))
         else:
-            # print a message that the node is already in the list, as it cannot be added more than once
+            # print a message that the node is already in the list, 
+            # as it cannot be added more than once
             print("Node {} already exists".format(str(node)))
     
     # define removing the node as method
@@ -28,7 +30,8 @@ class Graph():
         #print("Remove node {}".format(node))
         # check that the node exists in the list
         if str(node) in self.nodes:
-            # remove the node from the list (assuming there are no self-directed edges)
+            # remove the node from the list (assuming there are 
+            # no self-directed edges)
             self.nodes.remove(node)
             # remove all the edges with the corresponding node
             for i in self.nodes:
@@ -82,7 +85,8 @@ class Graph():
             # assign the cost
             self.costs.insert(index,cost)
         else:
-            # print a message that the edge is already in the list, as it cannot be added more than once
+            # print a message that the edge is already in the list, 
+            # as it cannot be added more than once
             print("Edge {}, {} already exists".format(str(node1), str(node2)))
         # check if the nodes of the edge exist in the nodes list
         # and add the node if missing
@@ -115,28 +119,44 @@ class Graph():
             pass
             #print("Edge {} doesn\'t exist".format([str(node1), str(node2)]))
 
+    # define adjacency matrix output as method
+    def adjacency(self):
+        # redimension the matrix according to the number of nodes
+        self.neighbours = [[False for row in range(0,len(self.nodes))] for line in range(0,len(self.nodes))]
+        # use each node for rows of matrix
+        for node1 in self.nodes:
+            # use each element for lines of matrix
+            for node2 in self.nodes:
+                # the indexes are needed to assign the boolean values
+                # to the corresponding rows and lines
+                row = self.nodes.index(node1)
+                line = self.nodes.index(node2)
+                # the main diagonal is False, as we assume there are no self-directed edges
+                if not row == line:
+                    # assign the boolean value of connection
+                    self.neighbours[row][line] = [node1, node2] in self.edges
+        return self.neighbours
 
-graph = Graph([1,2,'r',3,4,'t',5,6])
+    # define importing the list of edges all together
+    def import_edges(self, edges_list):
+        # select every edge from the list
+        for node1, node2, cost in edges_list:
+            # add the edge
+            self.add_edge(node1,node2,cost)
+
+
+graph = Graph()
+edges_list = ([
+    ("a", "b", 5),  ("a", "d", 1),  ("b", "a", 3), ("b", "c", 1),
+    ("c", "a", 10), ("c", "g", 4), ("d", "e", 3),  ("e", "c", 2),
+    ("f", "a", 2), ("f", "d", 7), ("f", "g", 4), ("g", "c", 1),
+    ("g", "e", 1), ("g", "f", 1)])
+graph.import_edges(edges_list)
 print(graph.import_nodes())
-graph.add_node(10)
+
 print(graph.get_nodes())
-graph.add_edge('1','2', 5)
-graph.add_edge('1','2', 5)
-graph.add_edge('3','4', 30)
 print(graph.get_edges())
 print(graph.get_costs())
-graph.add_edge('t','3', 12)
-graph.add_edge('r','6', 8)
-graph.add_edge('r','z', 18)
-graph.add_edge('4','2', 9)
-graph.add_edge('2','1', 1)
-print(graph.get_edges())
-print(graph.get_costs())
-print(graph.get_nodes())
-graph.rem_edge('1','2')
-graph.rem_node("1")
-print(graph.get_nodes())
-graph.rem_node(1)
-print(graph.get_nodes())
-graph.rem_node('t')
-print(graph.get_nodes())
+print()
+for i in graph.adjacency():
+    print(list(map(int,i)))
