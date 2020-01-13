@@ -8,17 +8,6 @@ class Graph():
         print(self.graph_data)
         # create the variable list for nodes
         self.nodes = []
-        # import the nodes from the graph data
-        for node in graph_data:
-            # check that the node doesn't repeat
-            if node not in self.nodes:
-                # add the node to the nodes list at the end
-                self.nodes.append(node)
-            # otherwise print a message that the node already exists
-            else:
-                print("Node {} already exists".format(node))
-            # just checking the result at every iteration
-            print(self.nodes)
         self.edges = []
 
     # define nodes as property
@@ -33,23 +22,36 @@ class Graph():
 
     # define adding the node as method
     def add_node(self, node):
-        if node not in self.nodes:
-                self.nodes.append(node)
-                print("Node {} is added".format(node))
+        # check that the node doesn't repeat
+        if str(node) not in self.nodes:
+                self.nodes.append(str(node))
+                print("Node {} is added".format(str(node)))
         else:
-            print("Node {} already exists".format(node))
-        #print("Current set of nodes:")
+            print("Node {} already exists".format(str(node)))
     
     # define removing the node as method
     def rem_node(self, node):
-        if node in self.nodes:
+        if str(node) in self.nodes:
             self.nodes.remove(node)
+            print("Removed node {}".format(str(node)))
         else:
-            print("Node {} doesn\'t exist".format(node))
+            print("Node {} doesn\'t exist".format(str(node)))
+    
+    # define nodes import from graph data as method
+    def import_nodes(self):
+        # import the nodes from the graph data
+        for node in self.graph_data:
+            # check that the node doesn't repeat
+            if node not in self.nodes:
+                # add the node to the nodes list at the end
+                self.nodes.append(str(node))
+                # just checking the result at every iteration
+                print(self.nodes)
+        return self.nodes
     
     # define nodes output as method
     def get_nodes(self):
-        print(self.nodes)
+        return self.nodes
 
     # define adding the edge between 2 nodes and assing the cost
     def add_edge(self, node1, node2, cost):
@@ -59,19 +61,20 @@ class Graph():
     def rem_edge(self, node1, node2):
         pass
 
-output= Graph([1,2,'r',3,4,'t',5,6])
-#print(output)
-output.add_node(1)
-output.get_nodes()
-output.add_node(10)
-output.get_nodes()
-output.add_node('y')
-output.get_nodes()
-output.add_node(3)
-output.get_nodes()
-output.rem_node(1)
-output.get_nodes()
-output.rem_node(1)
-output.get_nodes()
-output.rem_node('t')
-output.get_nodes()
+graph = Graph([1,2,'r',3,4,'t',5,6])
+print(graph.import_nodes())
+
+graph.add_node(1)
+print(graph.get_nodes())
+graph.add_node(10)
+print(graph.get_nodes())
+graph.add_node('1')
+print(graph.get_nodes())
+graph.add_node(3)
+print(graph.get_nodes())
+graph.rem_node("1")
+print(graph.get_nodes())
+graph.rem_node(1)
+print(graph.get_nodes())
+graph.rem_node('t')
+print(graph.get_nodes())
