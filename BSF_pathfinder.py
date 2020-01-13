@@ -4,12 +4,22 @@ class Graph():
     # initialization
     def __init__ (self, graph_data):
         self.graph_data = graph_data
+        # just checking 
+        print(self.graph_data)
+        # create the variable list for nodes
         self.nodes = []
+        # import the nodes from the graph data
         for node in graph_data:
-            self.nodes.append(node)
+            # check that the node doesn't repeat
+            if node not in self.nodes:
+                # add the node to the nodes list at the end
+                self.nodes.append(node)
+            # otherwise print a message that the node already exists
+            else:
+                print("Node {} already exists".format(node))
+            # just checking the result at every iteration
             print(self.nodes)
         self.edges = []
-        print(graph_data)
 
     # define nodes as property
     #@property
@@ -23,13 +33,19 @@ class Graph():
 
     # define adding the node as method
     def add_node(self, node):
-        self.nodes.append(node)
-        print("Node {} is added".format(node))
+        if node not in self.nodes:
+                self.nodes.append(node)
+                print("Node {} is added".format(node))
+        else:
+            print("Node {} already exists".format(node))
         #print("Current set of nodes:")
     
     # define removing the node as method
     def rem_node(self, node):
-        self.nodes.remove(node)
+        if node in self.nodes:
+            self.nodes.remove(node)
+        else:
+            print("Node {} doesn\'t exist".format(node))
     
     # define nodes output as method
     def get_nodes(self):
@@ -47,13 +63,15 @@ output= Graph([1,2,'r',3,4,'t',5,6])
 #print(output)
 output.add_node(1)
 output.get_nodes()
-output.add_node(2)
+output.add_node(10)
 output.get_nodes()
-output.add_node(6)
+output.add_node('y')
 output.get_nodes()
 output.add_node(3)
 output.get_nodes()
 output.rem_node(1)
 output.get_nodes()
 output.rem_node(1)
+output.get_nodes()
+output.rem_node('t')
 output.get_nodes()
