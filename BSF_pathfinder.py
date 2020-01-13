@@ -47,22 +47,29 @@ class Graph():
 
     # define adding the edge between 2 nodes and assing the cost
     def add_edge(self, node1, node2, cost = 1):
-        # add the edge to the edges list
-        self.edges.append([str(node1), str(node2)])
-        # get the index of the edge to assign the cost
-        index = self.edges.index([str(node1), str(node2)])
-        # assign the cost
-        self.costs.insert(index,cost)
+        if [str(node1), str(node2)] not in self.edges:
+            # add the edge to the edges list
+            self.edges.append([str(node1), str(node2)])
+            # get the index of the edge to assign the cost
+            index = self.edges.index([str(node1), str(node2)])
+            # assign the cost
+            self.costs.insert(index,cost)
+        else:
+            print("Edge {} already exists".format([str(node1), str(node2)]))
         print(self.edges)
         print(self.costs)
 
     # define removing the edge between 2 nodes
     def rem_edge(self, node1, node2):
-        index = self.edges.index([str(node1), str(node2)])
-        self.costs.pop(index)
-        print(self.costs)
-        self.edges.remove([node1,node2])
-        print(self.edges)
+        if [str(node1), str(node2)] in self.edges:
+            index = self.edges.index([str(node1), str(node2)])
+            self.edges.remove([node1,node2])
+            print(self.edges)
+            self.costs.pop(index)
+            print(self.costs)
+        else:
+            print("Edge {} doesn\'t exist".format([str(node1), str(node2)]))
+
 
 graph = Graph([1,2,'r',3,4,'t',5,6])
 print(graph.import_nodes())
@@ -81,6 +88,7 @@ graph.rem_node(1)
 print(graph.get_nodes())
 graph.rem_node('t')
 print(graph.get_nodes())
+graph.add_edge('1','2', 5)
 graph.add_edge('1','2', 5)
 graph.add_edge('2','1', 1)
 graph.rem_edge('1','2')
