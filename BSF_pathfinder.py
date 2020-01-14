@@ -174,7 +174,41 @@ class Graph():
             print('Queue', queue)
         return explored
     
-    
+    # define the BFS algorithm to find the shortest path between 2 nodes
+    def BFS_shortest_path(self, start, end):
+        # keep track of all visited nodes
+        explored = []
+        # keep track of nodes to be checked
+        queue = [[start]]
+
+        # keep looping until all the possible paths have been checked
+        while queue:
+            # pop shallowest node (first node) from queue
+            path = queue.pop(0)
+            print('Path', [path])
+            print('Explored',explored)
+            node = path[-1]
+            if node not in explored:
+                # the index for assosiating the naighbours matrix with the nodes list
+                index = self.nodes.index(node)
+                # iterator
+                a = 0
+                # go through all neighbour nodes, construct a new path and
+                # push it into the queue
+                for check in graph.neighbours[index]:
+                    new_path = list(path)
+                    if check:
+                        new_path.append(self.nodes[a])
+                        queue.append(new_path)
+                        # return path if the edge connects to the end
+                        if self.nodes[a] == end:
+                            return new_path
+                    # increment
+                    a += 1
+                # add node to list of checked nodes
+                explored.append(node)
+            print('Queue', queue)
+        return "No connecting path"
 
 graph = Graph()
 edges_list = ([
@@ -193,4 +227,7 @@ for i in graph.adjacency():
     print(list(map(int,i)))
 print("line 0")
 print(graph.neighbours[0])
+print('BFS exploring')
 print(graph.BFS_explore('a'))
+print('BFS path')
+print(graph.BFS_shortest_path('a','g'))
