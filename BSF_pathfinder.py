@@ -156,8 +156,8 @@ class Graph():
         while queue:
             # pop shallowest node (first node) from queue
             node = queue.pop(0)
-            print('Node', node)
-            print('Explored',explored)
+            #print('Node', node)
+            #print('Explored',explored)
             if node not in explored:
                 # add node to list of checked nodes
                 explored.append(node)
@@ -171,7 +171,7 @@ class Graph():
                         queue.append(self.nodes[a])
                     # increment
                     a += 1
-            print('Queue', queue)
+            #print('Queue', queue)
         return explored
     
     # define the BFS algorithm to find the shortest path between 2 nodes
@@ -185,8 +185,8 @@ class Graph():
         while queue:
             # pop shallowest node (first node) from queue
             path = queue.pop(0)
-            print('Path', [path])
-            print('Explored',explored)
+            #print('Path', [path])
+            #print('Explored',explored)
             node = path[-1]
             if node not in explored:
                 # the index for assosiating the naighbours matrix with the nodes list
@@ -207,7 +207,7 @@ class Graph():
                     a += 1
                 # add node to list of checked nodes
                 explored.append(node)
-            print('Queue', queue)
+            #print('Queue', queue)
         return "No connecting path"
 
 graph = Graph()
@@ -218,16 +218,20 @@ edges_list = ([
     ("g", "e", 1), ("g", "f", 1)])
 graph.import_edges(edges_list)
 print(graph.import_nodes())
-
+print('Get nodes')
 print(graph.get_nodes())
+print('Get edges')
 print(graph.get_edges())
+print('Get costs')
 print(graph.get_costs())
-print()
+print('Get adjacency matrix as boolean')
+for i in graph.adjacency():
+    print(i)
+print('Get adjacency matrix as 0/1')
 for i in graph.adjacency():
     print(list(map(int,i)))
-print("line 0")
-print(graph.neighbours[0])
-print('BFS exploring')
-print(graph.BFS_explore('a'))
-print('BFS path')
-print(graph.BFS_shortest_path('a','g'))
+print()
+print('BFS exploring starting from g')
+print(graph.BFS_explore('g'))
+print('BFS path d, f')
+print(graph.BFS_shortest_path('d','f')) 
