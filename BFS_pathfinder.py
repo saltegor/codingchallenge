@@ -161,7 +161,7 @@ class Graph():
             if node not in explored:
                 # add node to list of checked nodes
                 explored.append(node)
-                # the index for assosiating the naighbours matrix with the nodes list
+                # the index for assosiating the neighbours matrix with the nodes list
                 index = self.nodes.index(node)
                 # iterator
                 a = 0
@@ -189,7 +189,7 @@ class Graph():
             #print('Explored',explored)
             node = path[-1]
             if node not in explored:
-                # the index for assosiating the naighbours matrix with the nodes list
+                # the index for assosiating the neighbours matrix with the nodes list
                 index = self.nodes.index(node)
                 # iterator
                 a = 0
@@ -210,9 +210,126 @@ class Graph():
             #print('Queue', queue)
         return "No connecting path"
 
+    # define the BFS algorithm to find the shortest path between 2 nodes
+    def BFS_cheapest_path(self, start, end):
+        # keep track of all visited nodes
+        explored = []
+        # keep track of nodes to be checked
+        queue = [[start]]
+        path_cost = [float('inf') for i in self.nodes]
+        node = start
+        path_cost[self.nodes.index(node)] = 0
+        cheapest_path = [[],float('inf')]
+
+
+        # keep looping until all the possible paths have been checked
+        while queue:
+            # pop shallowest node (first node) from queue
+            path = queue.pop(0)
+            #print('Path', [path])
+            #print('Explored',explored)
+            node = path[-1]
+            if node not in explored:
+                # the index for assosiating the neighbours matrix with the nodes list
+                index = self.nodes.index(node)
+                # iterator
+                a = 0
+                # go through all neighbour nodes, construct a new path and
+                # push it into the queue
+                for check in graph.neighbours[index]:
+                    new_path = list(path)
+                    if check:
+                        iterator_node = self.nodes[a]
+                        cost_index = self.edges.index([node, iterator_node])
+                        new_path.append(iterator_node)
+                        temp = self.costs[cost_index] + path_cost[index]
+                        if temp < path_cost[a]:
+                            path_cost[a] = temp
+                            
+                        queue.append(new_path)
+                        # return path if the edge connects to the end
+                        if self.nodes[a] == end:
+                            cheapest_path = cheapest_path+[new_path, path_cost[a]]
+                        # return new_path, path_cost[a]
+                    # increment
+                    a += 1
+                # add node to list of checked nodes
+                explored.append(node)
+        return cheapest_path
+
+    '''
+    # define dijkstra algorithm for the cheapest path
+    def dijkstra(self, start, end):
+        # keep track of all visited nodes
+        explored = []
+        # keep track of nodes to be checked
+        queue = self.nodes.copy()
+        distances = list(self.nodes)
+        previous_nodes = list(self.nodes)
+        node = start
+        
+        # set the distance to infinity for all the nodes
+        for i in range(len(self.nodes)):
+            distances[i] = float('inf')
+            previous_nodes[i] = None
+        # set distance 0 for starting node
+        distances[self.nodes.index(node)] = 0
+        
+        while queue:
+            #explored.append(node)
+            print('Explored', explored)
+            for i in queue:
+                if distances[self.nodes.index(i)] < distances[self.nodes.index(node)]:
+                    node = i
+            print(distances)
+            print(distances.index(min(distances)))
+            node = self.nodes[distances.index(min(distances))]
+            queue.remove(node)
+            # the index for assosiating the neighbours matrix with the nodes list
+            index = self.nodes.index(node)
+            if distances[index] == float('inf'):
+                break
+            
+            # iterator
+            a = 0
+            # go through all neighbour nodes, construct a new path and
+            # push it into the queue
+            for check in graph.neighbours[index]:
+                if check:
+                    iterator_node = self.nodes[a]
+                    cost_index = self.edges.index([node, iterator_node])
+                    cost = self.costs[cost_index]
+                    cost = distances[index] + cost
+                    if cost < distances[a]:
+                        distances[a] = cost
+                        previous_nodes[a] = node
+                        #node = self.nodes[a]
+                         
+                    # return path if the edge connects to the end
+                    #if node == end:
+                    #   return new_path
+                # increment
+                a += 1
+            # add node to list of checked nodes
+            explored.append(node)
+        path = []
+        node = end
+        while previous_nodes[self.nodes.index(node)] is not None:
+            path.append(node)
+            node = previous_nodes[self.nodes.index(node)]
+        if path:
+            path = node + path
+        return path
+        
+        #print('Queue', queue)
+        #return "No connecting path"
+
+  '''          
+
+
 graph = Graph()
 edges_list = ([
-    ("a", "b", 5),  ("a", "d", 1),  ("b", "a", 3), ("b", "c", 1),
+    ("a", "b", 5),  ("a", "d", 100),  ("b", "a", 3), ("b", "c", 1),
     ("c", "a", 10), ("c", "g", 4), ("d", "e", 3),  ("e", "c", 2),
     ("f", "a", 2), ("f", "d", 7), ("f", "g", 4), ("g", "c", 1),
     ("g", "e", 1), ("g", "f", 1)])
@@ -235,3 +352,7 @@ print('BFS exploring starting from g')
 print(graph.BFS_explore('g'))
 print('BFS path d, f')
 print(graph.BFS_shortest_path('d','f')) 
+print(graph.nodes)
+print()
+print(graph.BFS_cheapest_path('a','e'))
+#print(graph.dijkstra('d','f'))
