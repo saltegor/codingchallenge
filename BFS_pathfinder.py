@@ -216,18 +216,19 @@ class Graph():
         explored = []
         # keep track of nodes to be checked
         queue = [[start]]
+        # set the path cost to infinity for all the nodes
         path_cost = [float('inf') for i in self.nodes]
+        # set cost for starting node as 0
+        path_cost[self.nodes.index(start)] = 0
+        
         node = start
-        path_cost[self.nodes.index(node)] = 0
+        # for the output
         cheapest_path = [[],float('inf')]
-
 
         # keep looping until all the possible paths have been checked
         while queue:
             # pop shallowest node (first node) from queue
             path = queue.pop(0)
-            #print('Path', [path])
-            #print('Explored',explored)
             node = path[-1]
             if node not in explored:
                 # the index for assosiating the neighbours matrix with the nodes list
@@ -237,20 +238,22 @@ class Graph():
                 # go through all neighbour nodes, construct a new path and
                 # push it into the queue
                 for check in graph.neighbours[index]:
-                    new_path = list(path)
                     if check:
+                        new_path = list(path)
+                        # save the parameters from the lists, 
+                        # to make code more readable
                         iterator_node = self.nodes[a]
                         cost_index = self.edges.index([node, iterator_node])
                         new_path.append(iterator_node)
                         temp = self.costs[cost_index] + path_cost[index]
                         if temp < path_cost[a]:
                             path_cost[a] = temp
-                            
                         queue.append(new_path)
-                        # return path if the edge connects to the end
+                        # save path if the edge connects to the end
                         if self.nodes[a] == end:
-                            cheapest_path = cheapest_path+[new_path, path_cost[a]]
-                        # return new_path, path_cost[a]
+                            # but make sure it is the cheapest
+                            if path_cost[a] < cheapest_path[1]:
+                                cheapest_path = [new_path, path_cost[a]]
                     # increment
                     a += 1
                 # add node to list of checked nodes
@@ -329,7 +332,7 @@ class Graph():
 
 graph = Graph()
 edges_list = ([
-    ("a", "b", 5),  ("a", "d", 100),  ("b", "a", 3), ("b", "c", 1),
+    ("a", "b", 5),  ("a", "d", 1),  ("b", "a", 3), ("b", "c", 1),
     ("c", "a", 10), ("c", "g", 4), ("d", "e", 3),  ("e", "c", 2),
     ("f", "a", 2), ("f", "d", 7), ("f", "g", 4), ("g", "c", 1),
     ("g", "e", 1), ("g", "f", 1)])
