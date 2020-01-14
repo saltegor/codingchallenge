@@ -122,19 +122,19 @@ class Graph():
     # define adjacency matrix output as method
     def adjacency(self):
         # redimension the matrix according to the number of nodes
-        self.neighbours = [[False for row in range(0,len(self.nodes))] for line in range(0,len(self.nodes))]
+        self.neighbours = [[False for row in range(0,len(self.nodes))] for column in range(0,len(self.nodes))]
         # use each node for rows of matrix
         for node1 in self.nodes:
-            # use each element for lines of matrix
+            # use each element for columns of matrix
             for node2 in self.nodes:
                 # the indexes are needed to assign the boolean values
-                # to the corresponding rows and lines
+                # to the corresponding rows and columns
                 row = self.nodes.index(node1)
-                line = self.nodes.index(node2)
+                column = self.nodes.index(node2)
                 # the main diagonal is False, as we assume there are no self-directed edges
-                if not row == line:
+                if row != column:
                     # assign the boolean value of connection
-                    self.neighbours[row][line] = [node1, node2] in self.edges
+                    self.neighbours[row][column] = [node1, node2] in self.edges
         return self.neighbours
 
     # define importing the list of edges all together
@@ -144,6 +144,37 @@ class Graph():
             # add the edge
             self.add_edge(node1,node2,cost)
 
+    # define BFS exploring algorithm, i.e. visiting 
+    # all the nodes of the graph using BFS
+    def BFS_explore(self, start):
+        # keep track of all visited nodes
+        explored = []
+        # keep track of nodes to be checked
+        queue = [start]
+
+        # keep looping until there are nodes still to be checked
+        while queue:
+            # pop shallowest node (first node) from queue
+            node = queue.pop(0)
+            print('Node', node)
+            print('Explored',explored)
+            if node not in explored:
+                # add node to list of checked nodes
+                explored.append(node)
+                # the index for assosiating the naighbours matrix with the nodes list
+                index = self.nodes.index(node)
+                # iterator
+                a = 0
+                # put in the queue only if there is edge
+                for check in graph.neighbours[index]:
+                    if check:
+                        queue.append(self.nodes[a])
+                    # increment
+                    a += 1
+            print('Queue', queue)
+        return explored
+    
+    
 
 graph = Graph()
 edges_list = ([
@@ -160,3 +191,6 @@ print(graph.get_costs())
 print()
 for i in graph.adjacency():
     print(list(map(int,i)))
+print("line 0")
+print(graph.neighbours[0])
+print(graph.BFS_explore('a'))
