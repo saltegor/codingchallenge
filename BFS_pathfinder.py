@@ -2,8 +2,8 @@
 class Graph():
 
     # initialization
-    def __init__ (self, graph_data = []):
-        self.graph_data = graph_data
+    def __init__ (self, list_of_nodes = []):
+        self.list_of_nodes = list_of_nodes
         # just checking 
         # print(self.graph_data)
         # create the variable list for nodes, edges and costs
@@ -11,6 +11,7 @@ class Graph():
         self.edges = []
         self.costs = []
         self.neighbours = []
+        self.import_nodes()
 
     # define adding the node as method
     def add_node(self, node):
@@ -44,16 +45,15 @@ class Graph():
             # in case there is no such node, print the message
             print("Node {} doesn\'t exist".format(str(node)))
     
-    # define nodes' import from graph data as method
+    # define nodes' import from list of nodes as method
     def import_nodes(self):
         #print("Importing nodes")
         # import the nodes from the graph data
-        for node in self.graph_data:
+        for node in self.list_of_nodes:
             # check that the node doesn't repeat 
             if node not in self.nodes:
                 # add the node to the nodes list at the end
                 self.add_node(node)
-                #self.nodes.append(str(node))
                 # just checking the result at every iteration
                 #print(self.nodes)
         return self.nodes
